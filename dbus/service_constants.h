@@ -61,6 +61,7 @@ const char kImageLoaderServiceName[] = "org.chromium.ImageLoader";
 const char kImageLoaderServicePath[] = "/org/chromium/ImageLoader";
 // Methods
 const char kRegisterComponent[] = "RegisterComponent";
+const char kLoadComponent[] = "LoadComponent";
 const char kGetComponentVersion[] = "GetComponentVersion";
 // Constants
 const char kBadResult[] = "";
@@ -91,6 +92,8 @@ const char kLibCrosServicePath[] = "/org/chromium/LibCrosService";
 const char kLibCrosServiceInterface[] = "org.chromium.LibCrosServiceInterface";
 // Methods
 const char kResolveNetworkProxy[] = "ResolveNetworkProxy";
+// TODO(teravest): Remove this once CheckLiveness is removed from
+// LibCrosService.
 const char kCheckLiveness[] = "CheckLiveness";
 const char kGetKioskAppRequiredPlatforVersion[] =
     "GetKioskAppRequiredPlatformVersion";
@@ -106,6 +109,14 @@ enum DisplayPowerState {
   DISPLAY_POWER_INTERNAL_OFF_EXTERNAL_ON = 2,
   DISPLAY_POWER_INTERNAL_ON_EXTERNAL_OFF = 3,
 };
+
+const char kLivenessServiceName[] = "org.chromium.LivenessService";
+const char kLivenessServicePath[] = "/org/chromium/LivenessService";
+const char kLivenessServiceInterface[] =
+    "org.chromium.LivenessServiceInterface";
+// Methods
+const char kLivenessServiceCheckLivenessMethod[] = "CheckLiveness";
+
 }  // namespace chromeos
 
 namespace cromo {
@@ -956,5 +967,54 @@ const char kGenerateEcP256KeyPairMethod[] = "GenerateEcP256KeyPair";
 const char kCreateSecureMessageMethod[] = "CreateSecureMessage";
 const char kUnwrapSecureMessageMethod[] = "UnwrapSecureMessage";
 }  // namespace easy_unlock
+
+namespace biod {
+const char kBiodServicePath[] = "/org/chromium/BiometricsDaemon";
+const char kBiodServiceName[] = "org.chromium.BiometricsDaemon";
+
+// Interfaces for objects exported by biod
+const char kBiometricsManagerInterface[] =
+    "org.chromium.BiometricsDaemon.BiometricsManager";
+const char kAuthSessionInterface[] =
+    "org.chromium.BiometricsDaemon.AuthSession";
+const char kEnrollSessionInterface[] =
+    "org.chromium.BiometricsDaemon.EnrollSession";
+const char kRecordInterface[] = "org.chromium.BiometricsDaemon.Record";
+
+// Methods
+const char kBiometricsManagerStartEnrollSessionMethod[] = "StartEnrollSession";
+const char kBiometricsManagerGetRecordsForUserMethod[] = "GetRecordsForUser";
+const char kBiometricsManagerDestroyAllRecordsMethod[] = "DestroyAllRecords";
+const char kBiometricsManagerStartAuthSessionMethod[] = "StartAuthSession";
+const char kAuthSessionEndMethod[] = "End";
+const char kEnrollSessionCancelMethod[] = "Cancel";
+const char kRecordRemoveMethod[] = "Remove";
+const char kRecordSetLabelMethod[] = "SetLabel";
+
+// Signals
+const char kBiometricsManagerEnrollScanDoneSignal[] = "EnrollScanDone";
+const char kBiometricsManagerAuthScanDoneSignal[] = "AuthScanDone";
+const char kBiometricsManagerScanFailedSignal[] = "ScanFailed";
+
+// Properties
+const char kBiometricsManagerBiometricTypeProperty[] = "Type";
+const char kRecordLabelProperty[] = "Label";
+
+// Values
+enum BiometricType {
+  BIOMETRIC_FINGERPRINT = 0,
+  BIOMETRIC_RETINA = 1,
+  BIOMETRIC_FACE = 2,
+  BIOMETRIC_VOICE = 3,
+};
+enum ScanResultType {
+  SCAN_RESULT_SUCCESS = 0,
+  SCAN_RESULT_PARTIAL = 1,
+  SCAN_RESULT_INSUFFICIENT = 2,
+  SCAN_RESULT_SENSOR_DIRTY = 3,
+  SCAN_RESULT_TOO_SLOW = 4,
+  SCAN_RESULT_TOO_FAST = 5,
+};
+}  // namespace biod
 
 #endif  // SYSTEM_API_DBUS_SERVICE_CONSTANTS_H_
